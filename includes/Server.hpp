@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_irc.cpp                                         :+:      :+:    :+:   */
+/*   Server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/01/12 15:38:03 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/16 18:55:27 by cdapurif         ###   ########.fr       */
+/*   Created: 2023/01/16 18:46:52 by cdapurif          #+#    #+#             */
+/*   Updated: 2023/01/16 18:49:39 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/Server.hpp"
+#ifndef SERVER_HPP
+# define SERVER_HPP
 
-void    init_serv(char **av)
+# include <iostream>
+# include <sys/socket.h>
+
+class Server
 {
-    Server  serv;
-    
-    std::cout << "Port: " << av[0] << " | Password: " << av[1] << std::endl;
-}
 
-int main(int ac, char **av)
-{
-    if (ac != 3)
-    {
-        std::cout << "Error" << std::endl << "usage: ./ircserv <port> <password>" << std::endl;
-        return (1);
-    }
-    init_serv(++av);
+    public:
 
-    return (0);
-}
+        Server();
+        Server(const Server& other);
+        Server& operator=(const Server& other);
+
+        ~Server();
+};
+
+#endif
