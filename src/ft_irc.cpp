@@ -6,7 +6,7 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:38:03 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/17 18:23:50 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/17 19:07:30 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 void    init_serv(char **av)
 {
-    //Server          serv; // Useless, need to initiate socket creation and closing (constructor/destructor) and most of the features to handle itself
+    //Server          serv; // useless, need to initiate socket creation and closing (constructor/destructor) and most of the features to handle itself
     sockaddr_in6    hint;
     int             sockfd;
     int             port;
     int             on = 1;
+    //int             off = 0; // keep it only if you use setsockopt to disable IPV6_V6ONLY
     
     std::cout << "Port: " << av[0] << " | Password: " << av[1] << std::endl;
 
@@ -58,7 +59,7 @@ void    init_serv(char **av)
     }
 
     // mark the socket as listening for incoming connections requests
-    if (listen(sockfd, 10) == -1)
+    if (listen(sockfd, SOMAXCONN) == -1)
     {
         close (sockfd);
         std::cerr << "Error while listening" << std::endl;
