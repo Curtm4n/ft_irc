@@ -6,12 +6,14 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:46:52 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/17 16:33:17 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/17 22:15:23 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
+
+# include <cstdio> //printf
 
 # include <cstdlib>
 # include <cstring>

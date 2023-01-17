@@ -6,7 +6,7 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:38:03 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/17 19:07:30 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/17 22:15:44 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void    init_serv(char **av)
     int             sockfd;
     int             port;
     int             on = 1;
-    //int             off = 0; // keep it only if you use setsockopt to disable IPV6_V6ONLY
+    int             off = 0;
+
+    int             rcdsize = 250; // only here for testing
+    char            buffer[100];
     
     std::cout << "Port: " << av[0] << " | Password: " << av[1] << std::endl;
 
@@ -41,8 +44,16 @@ void    init_serv(char **av)
     // allow the local address to be reused when the server is restarted before the required wait time expires
     if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on)) == -1)
     {
-        close (sockfd);
-        std::cerr << "setsockopt failed" << std::endl;
+        close(sockfd);
+        std::cerr << "setsockopt SO_REUSEADDR failed" << std::endl;
+        return ;
+    }
+
+    // deactivate option IPV6_V6ONLY
+    if (setsockopt(sockfd, IPPROTO_IPV6, IPV6_V6ONLY, &off, sizeof(off)) == -1)
+    {
+        close(sockfd);
+        std::cerr << "setsockopt IPV6_V6ONLY failed" << std::endl;
         return ;
     }
 
@@ -53,7 +64,7 @@ void    init_serv(char **av)
     hint.sin6_addr = in6addr_any;
     if (bind(sockfd, (sockaddr *)&hint, sizeof(hint)) == -1)
     {
-        close (sockfd);
+        close(sockfd);
         std::cerr << "Can't bind socket" << std::endl;
         return ;
     }
@@ -61,10 +72,31 @@ void    init_serv(char **av)
     // mark the socket as listening for incoming connections requests
     if (listen(sockfd, SOMAXCONN) == -1)
     {
-        close (sockfd);
+        close(sockfd);
         std::cerr << "Error while listening" << std::endl;
         return ;
     }
+
+    // accepet a new connection on a socket
+    socklen_t address_len = sizeof(hint);
+    
+    if (accept(sockfd, (sockaddr *)&hint, &address_len) == -1)
+    {
+        close(sockfd);
+        std::cerr << "Error with accept()" << std::endl;
+        return ;
+    }
+
+    if (setsockopt(sockfd, SOL_SOCKET, SO_RCVLOWAT, &rcdsize, sizeof(rcdsize)) == -1)
+    {
+        close(sockfd);
+        std::cerr << "setsockopt SO_RCVLOWAT failed" << std::endl;
+        return ;
+    }
+
+    recv(sockfd, buffer, sizeof(buffer), 0);
+
+    printf("%s", buffer);
 
     close(sockfd);
 }
