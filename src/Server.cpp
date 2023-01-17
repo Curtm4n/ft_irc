@@ -6,7 +6,7 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:49:50 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/16 18:56:38 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/17 17:29:21 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 Server::Server()
 {
+    // Create the socket here, if creation fails, throw an exception (catch it in the main)
     std::cout << "Server default constructor" << std::endl;
 }
 
@@ -37,5 +38,6 @@ Server& Server::operator=(const Server& other)
 
 Server::~Server()
 {
+    // Close the socket here (if constructor throw, destructor is not run, so technically close is always safe)
     std::cout << "Server destructor" << std::endl; 
 }
