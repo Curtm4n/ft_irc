@@ -6,7 +6,7 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:38:03 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/17 22:15:44 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/19 11:48:06 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,11 @@ void    init_serv(char **av)
     //Server          serv; // useless, need to initiate socket creation and closing (constructor/destructor) and most of the features to handle itself
     sockaddr_in6    hint;
     int             sockfd;
+    int             clientfd;
     int             port;
     int             on = 1;
     int             off = 0;
-
-    int             rcdsize = 250; // only here for testing
-    char            buffer[100];
+    char            buffer[BUFFER_SIZE + 1];
     
     std::cout << "Port: " << av[0] << " | Password: " << av[1] << std::endl;
 
@@ -77,28 +76,45 @@ void    init_serv(char **av)
         return ;
     }
 
-    // accepet a new connection on a socket
-    socklen_t address_len = sizeof(hint);
+    // accept a new connection on a socket
     
-    if (accept(sockfd, (sockaddr *)&hint, &address_len) == -1)
+    clientfd = accept(sockfd, 0, 0);
+    if (clientfd == -1)
     {
         close(sockfd);
         std::cerr << "Error with accept()" << std::endl;
         return ;
     }
 
-    if (setsockopt(sockfd, SOL_SOCKET, SO_RCVLOWAT, &rcdsize, sizeof(rcdsize)) == -1)
+    // reading part
+    int readBytes;
+    
+    while (true)
     {
-        close(sockfd);
-        std::cerr << "setsockopt SO_RCVLOWAT failed" << std::endl;
-        return ;
+        //memset(buffer, 0, 100); //would fill the buffer with character 0 ('\0') but is unoptimized with large buffer_size
+
+        readBytes = recv(clientfd, buffer, BUFFER_SIZE, 0);
+
+        if (readBytes == -1)
+        {
+            close(sockfd);
+            close(clientfd);
+            std::cerr << "Error while reading" << std::endl;
+            return ;
+        }
+
+        if (readBytes == 0)
+        {
+            std::cout << "Client disconnected" << std::endl;
+            break ;
+        }
+
+        buffer[readBytes] = '\0';
+        std::cout << buffer;
     }
-
-    recv(sockfd, buffer, sizeof(buffer), 0);
-
-    printf("%s", buffer);
-
+    
     close(sockfd);
+    close(clientfd);
 }
 
 int main(int ac, char **av)

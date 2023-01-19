@@ -6,14 +6,12 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:46:52 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/17 22:15:23 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/19 11:47:22 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_HPP
 # define SERVER_HPP
-
-# include <cstdio> //printf
 
 # include <cstdlib>
 # include <cstring>
@@ -23,6 +21,8 @@
 # include <sys/socket.h>
 # include <netinet/in.h>
 # include <netinet/ip.h>
+
+# define BUFFER_SIZE 4096
 
 class Server
 {
