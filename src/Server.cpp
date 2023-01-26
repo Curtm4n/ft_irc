@@ -6,7 +6,7 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:49:50 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/19 17:53:15 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/26 15:55:05 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 Server::Server() : hint(), sockfd(-1), clientfd(-1), readBytes(0), on(1), off(0), buffer()
 {
-    sockfd = socket(AF_INET6, SOCK_STREAM, 0); // IPv6 socket handle both IPv6 and IPv4 connections
+    sockfd = socket(PF_INET6, SOCK_STREAM, 0); // IPv6 socket handle both IPv6 and IPv4 connections
     if (sockfd == -1)
         throw Server::ServerException("Cannot create a socket");
 }
