@@ -6,7 +6,7 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/16 18:49:50 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/26 15:55:05 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/27 13:45:55 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,12 @@ void    Server::startServ(void)
             break ;
         }
 
+        // print the data received
         buffer[readBytes] = '\0';
         std::cout << buffer;
+
+        // send back the data received to the client
+        //send(clientfd, buffer, readBytes, 0);
     }
 }
 
