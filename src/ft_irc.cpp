@@ -6,16 +6,19 @@
 /*   By: cdapurif <cdapurif@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 15:38:03 by cdapurif          #+#    #+#             */
-/*   Updated: 2023/01/19 17:39:00 by cdapurif         ###   ########.fr       */
+/*   Updated: 2023/01/31 17:04:45 by cdapurif         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/Server.hpp"
+#include "../includes/signal.hpp"
 
 void    launchServer(char **av)
 {
     Server          server;
     int             port;
+
+    signal(SIGINT, sighandler);
 
     std::cout << "Port: " << av[0] << " | Password: " << av[1] << std::endl;
 
